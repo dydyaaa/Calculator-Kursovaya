@@ -67,9 +67,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     AppendMenu(hSubMenu, MF_STRING, IDM_ABOUT, L"О разработчике");
     AppendMenu(hSubMenu, MF_STRING, IDM_EXIT, L"Выход");
     AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT_PTR)hSubMenu, L"Меню");
-    SetMenu(hwnd, hMenu);
+    SetMenu(hwnd, hMenu); 
 
     RegisterHotKey(hwnd, 1, 0, VK_RETURN);
+    RegisterHotKey(hwnd, 2, 0, VK_BACK);
 
     ShowWindow(hwnd, nCmdShow);
 
@@ -332,6 +333,24 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
         case 1:
             PerformOperation(hwnd, L'=');
             break;
+
+        case 2:
+        {
+            // Получаем текущий текст из текстового поля
+            HWND hwndEdit = GetDlgItem(hwnd, ID_EDIT_RESULT);
+            int len = GetWindowTextLength(hwndEdit);
+            std::wstring text(len, L'\0');
+            GetWindowText(hwndEdit, &text[0], len + 1);
+
+            // Проверяем, что строка не пустая
+            if (!text.empty()) {
+                // Удаляем последний символ из строки
+                text.pop_back();
+
+                // Устанавливаем обновленный текст в текстовое поле
+                SetWindowText(hwndEdit, text.c_str());
+            }
+        }
         }
         break;
 
