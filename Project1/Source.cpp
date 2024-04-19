@@ -52,7 +52,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     HWND hwnd = CreateWindowEx(
         0,
         L"CalculatorClass",
-        L"Калькулятор",
+        L"РљР°Р»СЊРєСѓР»СЏС‚РѕСЂ",
         WS_OVERLAPPEDWINDOW,
         CW_USEDEFAULT, CW_USEDEFAULT, 265, 430,
         NULL,
@@ -63,10 +63,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     HMENU hMenu = CreateMenu();
     HMENU hSubMenu = CreatePopupMenu();
-    AppendMenu(hSubMenu, MF_STRING, IDM_INFO, L"Информация");
-    AppendMenu(hSubMenu, MF_STRING, IDM_ABOUT, L"О разработчике");
-    AppendMenu(hSubMenu, MF_STRING, IDM_EXIT, L"Выход");
-    AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT_PTR)hSubMenu, L"Меню");
+    AppendMenu(hSubMenu, MF_STRING, IDM_INFO, L"Г€Г­ГґГ®Г°Г¬Г Г¶ГЁГї");
+    AppendMenu(hSubMenu, MF_STRING, IDM_ABOUT, L"ГЋ Г°Г Г§Г°Г ГЎГ®ГІГ·ГЁГЄГҐ");
+    AppendMenu(hSubMenu, MF_STRING, IDM_EXIT, L"Г‚Г»ГµГ®Г¤");
+    AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT_PTR)hSubMenu, L"ГЊГҐГ­Гѕ");
     SetMenu(hwnd, hMenu); 
 
     RegisterHotKey(hwnd, 1, 0, VK_RETURN);
@@ -99,9 +99,9 @@ double performOperation(double operand1, double operand2, char op) {
         if (operand2 != 0)
             return operand1 / operand2;
         else
-            throw std::invalid_argument("Деление на ноль");
+            throw std::invalid_argument("Р”РµР»РµРЅРёРµ РЅР° РЅРѕР»СЊ");
     default:
-        throw std::invalid_argument("Некорректный оператор");
+        throw std::invalid_argument("РќРµРєРѕСЂСЂРµРєС‚РЅС‹Р№ РѕРїРµСЂР°С‚РѕСЂ"");
     }
 }
 
@@ -128,7 +128,7 @@ double calculate_expression(const std::wstring& expression) {
                 char op = operators.top();
                 operators.pop();
                 if (operands.size() < 2) {
-                    throw std::invalid_argument("Недостаточно операндов");
+                    throw std::invalid_argument("РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РѕРїРµСЂР°РЅРґРѕРІ");
                 }
                 double operand2 = operands.top();
                 operands.pop();
@@ -147,7 +147,7 @@ double calculate_expression(const std::wstring& expression) {
                 char op = operators.top();
                 operators.pop();
                 if (operands.size() < 2) {
-                    throw std::invalid_argument("Недостаточно операндов");
+                    throw std::invalid_argument("РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РѕРїРµСЂР°РЅРґРѕРІ");
                 }
                 double operand2 = operands.top();
                 operands.pop();
@@ -157,7 +157,7 @@ double calculate_expression(const std::wstring& expression) {
                 operands.push(result);
             }
             if (operators.empty()) {
-                throw std::invalid_argument("Несогласованные скобки");
+                throw std::invalid_argument("РќРµСЃРѕРіР»Р°СЃРѕРІР°РЅРЅС‹Рµ СЃРєРѕР±РєРё");
             }
             operators.pop();
         }
@@ -167,7 +167,7 @@ double calculate_expression(const std::wstring& expression) {
         char op = operators.top();
         operators.pop();
         if (operands.size() < 2) {
-            throw std::invalid_argument("Недостаточно операндов");
+            throw std::invalid_argument("РќРµРґРѕСЃС‚Р°С‚РѕС‡РЅРѕ РѕРїРµСЂР°РЅРґРѕРІ");
         }
         double operand2 = operands.top();
         operands.pop();
@@ -178,7 +178,7 @@ double calculate_expression(const std::wstring& expression) {
     }
 
     if (operands.size() != 1) {
-        throw std::invalid_argument("Некорректное выражение");
+        throw std::invalid_argument("РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ РІС‹СЂР°Р¶РµРЅРёРµ");
     }
 
     return operands.top();
@@ -254,18 +254,18 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
         case ID_BUTTON_DEL:
         {
-            // Получаем текущий текст из текстового поля
+            // ГЏГ®Г«ГіГ·Г ГҐГ¬ ГІГҐГЄГіГ№ГЁГ© ГІГҐГЄГ±ГІ ГЁГ§ ГІГҐГЄГ±ГІГ®ГўГ®ГЈГ® ГЇГ®Г«Гї
             HWND hwndEdit = GetDlgItem(hwnd, ID_EDIT_RESULT);
             int len = GetWindowTextLength(hwndEdit);
             std::wstring text(len, L'\0');
             GetWindowText(hwndEdit, &text[0], len + 1);
 
-            // Проверяем, что строка не пустая
+            // ГЏГ°Г®ГўГҐГ°ГїГҐГ¬, Г·ГІГ® Г±ГІГ°Г®ГЄГ  Г­ГҐ ГЇГіГ±ГІГ Гї
             if (!text.empty()) {
-                // Удаляем последний символ из строки
+                // Г“Г¤Г Г«ГїГҐГ¬ ГЇГ®Г±Г«ГҐГ¤Г­ГЁГ© Г±ГЁГ¬ГўГ®Г« ГЁГ§ Г±ГІГ°Г®ГЄГЁ
                 text.pop_back();
 
-                // Устанавливаем обновленный текст в текстовое поле
+                // Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ Г®ГЎГ­Г®ГўГ«ГҐГ­Г­Г»Г© ГІГҐГЄГ±ГІ Гў ГІГҐГЄГ±ГІГ®ГўГ®ГҐ ГЇГ®Г«ГҐ
                 SetWindowText(hwndEdit, text.c_str());
             }
         }
@@ -312,10 +312,10 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
             PerformOperation(hwnd, L'=');
             break;
         case IDM_INFO:
-            MessageBox(hwnd, L"Пример простого калькулятора с использованием Win32 API", L"Информация", MB_OK | MB_ICONINFORMATION);
+            MessageBox(hwnd, L"РџСЂРёРјРµСЂ РїСЂРѕСЃС‚РѕРіРѕ РєР°Р»СЊРєСѓР»СЏС‚РѕСЂР° СЃ РёСЃРїРѕР»СЊР·РѕРІР°РЅРёРµРј Win32 API", L"РРЅС„РѕСЂРјР°С†РёСЏ", MB_OK | MB_ICONINFORMATION);
             break;
         case IDM_ABOUT:
-            MessageBox(hwnd, L"Разработчик: Мамедов Тимур ИС 2-2", L"Информация", MB_OK | MB_ICONINFORMATION);
+            MessageBox(hwnd, L"Р Р°Р·СЂР°Р±РѕС‚С‡РёРє: РњР°РјРµРґРѕРІ РўРёРјСѓСЂ РРЎ 2-2", L"РРЅС„РѕСЂРјР°С†РёСЏ", MB_OK | MB_ICONINFORMATION);
             break;
         case IDM_EXIT:
             PostQuitMessage(0);
@@ -336,18 +336,18 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
         case 2:
         {
-            // Получаем текущий текст из текстового поля
+            // ГЏГ®Г«ГіГ·Г ГҐГ¬ ГІГҐГЄГіГ№ГЁГ© ГІГҐГЄГ±ГІ ГЁГ§ ГІГҐГЄГ±ГІГ®ГўГ®ГЈГ® ГЇГ®Г«Гї
             HWND hwndEdit = GetDlgItem(hwnd, ID_EDIT_RESULT);
             int len = GetWindowTextLength(hwndEdit);
             std::wstring text(len, L'\0');
             GetWindowText(hwndEdit, &text[0], len + 1);
 
-            // Проверяем, что строка не пустая
+            // ГЏГ°Г®ГўГҐГ°ГїГҐГ¬, Г·ГІГ® Г±ГІГ°Г®ГЄГ  Г­ГҐ ГЇГіГ±ГІГ Гї
             if (!text.empty()) {
-                // Удаляем последний символ из строки
+                // Г“Г¤Г Г«ГїГҐГ¬ ГЇГ®Г±Г«ГҐГ¤Г­ГЁГ© Г±ГЁГ¬ГўГ®Г« ГЁГ§ Г±ГІГ°Г®ГЄГЁ
                 text.pop_back();
 
-                // Устанавливаем обновленный текст в текстовое поле
+                // Г“Г±ГІГ Г­Г ГўГ«ГЁГўГ ГҐГ¬ Г®ГЎГ­Г®ГўГ«ГҐГ­Г­Г»Г© ГІГҐГЄГ±ГІ Гў ГІГҐГЄГ±ГІГ®ГўГ®ГҐ ГЇГ®Г«ГҐ
                 SetWindowText(hwndEdit, text.c_str());
             }
         }
@@ -394,7 +394,7 @@ void PerformOperation(HWND hwnd, WCHAR operation) {
         SetWindowText(hwndEdit, result_str.c_str());
     }
     catch (const std::exception& e) {
-        MessageBox(hwnd, L"Ошибка при вычислении результата", L"Ошибка", MB_OK | MB_ICONERROR);
+        MessageBox(hwnd, L"РћС€РёР±РєР° РїСЂРё РІС‹С‡РёСЃР»РµРЅРёРё СЂРµР·СѓР»СЊС‚Р°С‚Р°", L"РћС€РёР±РєР°", MB_OK | MB_ICONERROR);
         return;
     }
 }
