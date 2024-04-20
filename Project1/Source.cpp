@@ -63,10 +63,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
     HMENU hMenu = CreateMenu();
     HMENU hSubMenu = CreatePopupMenu();
-    AppendMenu(hSubMenu, MF_STRING, IDM_INFO, L"Èíôîðìàöèÿ");
-    AppendMenu(hSubMenu, MF_STRING, IDM_ABOUT, L"Î ðàçðàáîò÷èêå");
-    AppendMenu(hSubMenu, MF_STRING, IDM_EXIT, L"Âûõîä");
-    AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT_PTR)hSubMenu, L"Ìåíþ");
+    AppendMenu(hSubMenu, MF_STRING, IDM_INFO, L"Информация");
+    AppendMenu(hSubMenu, MF_STRING, IDM_ABOUT, L"Разработчик");
+    AppendMenu(hSubMenu, MF_STRING, IDM_EXIT, L"Выход");
+    AppendMenu(hMenu, MF_STRING | MF_POPUP, (UINT_PTR)hSubMenu, L"Меню");
     SetMenu(hwnd, hMenu); 
 
     RegisterHotKey(hwnd, 1, 0, VK_RETURN);
