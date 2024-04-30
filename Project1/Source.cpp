@@ -101,7 +101,7 @@ double performOperation(double operand1, double operand2, char op) {
         else
             throw std::invalid_argument("Деление на ноль");
     default:
-        throw std::invalid_argument("Некорректный оператор"");
+        throw std::invalid_argument("Некорректный оператор");
     }
 }
 
