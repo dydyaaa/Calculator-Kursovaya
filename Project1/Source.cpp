@@ -254,18 +254,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
         case ID_BUTTON_DEL:
         {
-            // Ïîëó÷àåì òåêóùèé òåêñò èç òåêñòîâîãî ïîëÿ
             HWND hwndEdit = GetDlgItem(hwnd, ID_EDIT_RESULT);
             int len = GetWindowTextLength(hwndEdit);
             std::wstring text(len, L'\0');
             GetWindowText(hwndEdit, &text[0], len + 1);
 
-            // Ïðîâåðÿåì, ÷òî ñòðîêà íå ïóñòàÿ
             if (!text.empty()) {
-                // Óäàëÿåì ïîñëåäíèé ñèìâîë èç ñòðîêè
                 text.pop_back();
 
-                // Óñòàíàâëèâàåì îáíîâëåííûé òåêñò â òåêñòîâîå ïîëå
                 SetWindowText(hwndEdit, text.c_str());
             }
         }
@@ -336,18 +332,14 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam) 
 
         case 2:
         {
-            // Ïîëó÷àåì òåêóùèé òåêñò èç òåêñòîâîãî ïîëÿ
             HWND hwndEdit = GetDlgItem(hwnd, ID_EDIT_RESULT);
             int len = GetWindowTextLength(hwndEdit);
             std::wstring text(len, L'\0');
             GetWindowText(hwndEdit, &text[0], len + 1);
 
-            // Ïðîâåðÿåì, ÷òî ñòðîêà íå ïóñòàÿ
             if (!text.empty()) {
-                // Óäàëÿåì ïîñëåäíèé ñèìâîë èç ñòðîêè
                 text.pop_back();
 
-                // Óñòàíàâëèâàåì îáíîâëåííûé òåêñò â òåêñòîâîå ïîëå
                 SetWindowText(hwndEdit, text.c_str());
             }
         }
