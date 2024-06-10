@@ -87,7 +87,7 @@ bool isOperator(char c) {
     return (c == '+' || c == '-' || c == '*' || c == '/');
 }
 
-double performOperation(double operand1, double operand2, char op) {
+long double performOperation(long double operand1, long double operand2, char op) {
     switch (op) {
     case '+':
         return operand1 + operand2;
@@ -105,8 +105,8 @@ double performOperation(double operand1, double operand2, char op) {
     }
 }
 
-double calculate_expression(const std::wstring& expression) {
-    std::stack<double> operands;
+long double calculate_expression(const std::wstring& expression) {
+    std::stack<long double> operands;
     std::stack<char> operators;
 
     for (size_t i = 0; i < expression.length(); ++i) {
@@ -118,7 +118,7 @@ double calculate_expression(const std::wstring& expression) {
                 ++j;
             }
             std::wstring number_str = expression.substr(i, j - i);
-            double number = std::stod(number_str);
+            long double number = std::stod(number_str);
             operands.push(number);
             i = j - 1;
         }
@@ -130,11 +130,11 @@ double calculate_expression(const std::wstring& expression) {
                 if (operands.size() < 2) {
                     throw std::invalid_argument("Недостаточно операндов");
                 }
-                double operand2 = operands.top();
+                long double operand2 = operands.top();
                 operands.pop();
-                double operand1 = operands.top();
+                long double operand1 = operands.top();
                 operands.pop();
-                double result = performOperation(operand1, operand2, op);
+                long double result = performOperation(operand1, operand2, op);
                 operands.push(result);
             }
             operators.push(token);
@@ -149,11 +149,11 @@ double calculate_expression(const std::wstring& expression) {
                 if (operands.size() < 2) {
                     throw std::invalid_argument("Недостаточно операндов");
                 }
-                double operand2 = operands.top();
+                long double operand2 = operands.top();
                 operands.pop();
-                double operand1 = operands.top();
+                long double operand1 = operands.top();
                 operands.pop();
-                double result = performOperation(operand1, operand2, op);
+                long double result = performOperation(operand1, operand2, op);
                 operands.push(result);
             }
             if (operators.empty()) {
@@ -169,11 +169,11 @@ double calculate_expression(const std::wstring& expression) {
         if (operands.size() < 2) {
             throw std::invalid_argument("Недостаточно операндов");
         }
-        double operand2 = operands.top();
+        long double operand2 = operands.top();
         operands.pop();
-        double operand1 = operands.top();
+        long double operand1 = operands.top();
         operands.pop();
-        double result = performOperation(operand1, operand2, op);
+        long double result = performOperation(operand1, operand2, op);
         operands.push(result);
     }
 
@@ -381,12 +381,29 @@ void PerformOperation(HWND hwnd, WCHAR operation) {
     try {
         double result = calculate_expression(expression);
 
-        std::wstring result_str = (std::floor(result) == result) ? std::to_wstring(static_cast<int>(result)) : std::to_wstring(result);
+        // Ограничение для допустимых значений
+        const double MAX_VALUE = 100e10; // Максимальное значение
+        const double MIN_VALUE = -100e10; // Минимальное значение
 
-        SetWindowText(hwndEdit, result_str.c_str());
+        if (result > MAX_VALUE || result < MIN_VALUE) {
+            SetWindowText(hwndEdit, L"Переполнение");
+        }
+        else {
+            std::wstringstream result_str;
+            result_str << std::fixed << std::setprecision(10) << result; // Ограничение на 10 знаков после запятой
+            std::wstring result_wstr = result_str.str();
+
+            // Удаление лишних нулей после запятой
+            result_wstr.erase(result_wstr.find_last_not_of(L'0') + 1, std::wstring::npos);
+            if (result_wstr.back() == L'.') {
+                result_wstr.pop_back();
+            }
+
+            SetWindowText(hwndEdit, result_wstr.c_str());
+        }
     }
     catch (const std::exception& e) {
-        MessageBox(hwnd, L"Ошибка при вычислении результата", L"Ошибка", MB_OK | MB_ICONERROR);
+        SetWindowText(hwndEdit, L"Ошибка");
         return;
     }
 }
